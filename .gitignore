@@ -3,6 +3,9 @@
 # Learn more about .gitignore:
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
+# my files added
+.env
+db.sqlite3
 # Node artifact files
 node_modules/
 dist/
@@ -12,11 +15,13 @@ dist/
 
 # Compiled Python bytecode
 *.py[cod]
+*$py.class 
 
 # Log files
 *.log
 
 # Package files
+lib/
 *.jar
 
 # Maven
@@ -47,4 +52,5 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
+
 
