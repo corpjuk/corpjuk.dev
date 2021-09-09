@@ -1,4 +1,4 @@
-FROM python:3.6
+FROM python:3.8
 LABEL maintainer chris@shenkan.dev
 
 ENV DJANGO_SETTINGS_MODULE=eatplants.settings.dev
@@ -22,4 +22,4 @@ EXPOSE 8001
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
-CMD ["/usr/local/bin/gunicorn", "--config", "config/gunicorn.conf", "--log-config", "config/logging.conf", "-e", "DJANGO_SETTINGS_MODULE=eatplants.settings.dev", "-w", "4", "-b", "0.0.0.0:8001", "eatplants.wsgi:application"]
+CMD ["/usr/local/bin/gunicorn", "--config", "config/gunicorn.conf", "-e", "DJANGO_SETTINGS_MODULE=eatplants.settings.production", "-w", "4", "-b", "0.0.0.0:8001", "eatplants.wsgi:application"]
