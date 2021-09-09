@@ -1,5 +1,5 @@
 FROM python:3.8
-LABEL maintainer chris@shenkan.dev
+LABEL maintainer justin@corpjuk.dev
 
 ENV DJANGO_SETTINGS_MODULE=eatplants.settings.dev
 
