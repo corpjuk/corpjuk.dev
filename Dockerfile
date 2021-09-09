@@ -3,7 +3,7 @@ LABEL maintainer chris@shenkan.dev
 
 ENV DJANGO_SETTINGS_MODULE=eatplants.settings.dev
 
-WORKDIR /
+WORKDIR /app
 
 COPY manage.py /app/
 COPY requirements/ /app/requirements
