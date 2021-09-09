@@ -30,7 +30,7 @@ from .views import home_view
 
 #the order matters for URLS
 urlpatterns = [
-    path('', home_view), # index / home / root
+    path('/', home_view), # index / home / root
     path('articles/', article_search_view),
     path('articles/create/', article_create_view),
     path('articles/<int:id>/', article_detail_view),
