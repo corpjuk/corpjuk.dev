@@ -6,7 +6,7 @@ ENV DJANGO_SETTINGS_MODULE=eatplants.settings.dev
 WORKDIR /
 
 COPY manage.py /app/
-COPY requirements /app/requirements
+COPY requirements/ /app/requirements
 
 RUN pip install -r requirements/dev.txt
 
