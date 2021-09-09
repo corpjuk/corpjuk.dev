@@ -21,6 +21,8 @@ from django.shortcuts import render
 
 ######
 
+
+
 def home_view(request, id=None, *args, **kwargs):
     #random_id = random.randint(1,4)
     article_obj = Article.objects.get(id=2)
@@ -46,4 +48,6 @@ def home_view(request, id=None, *args, **kwargs):
     HTML_STRING = render_to_string("home-view.html", context=context)
 
     return HttpResponse(HTML_STRING)
-
+from django.shortcuts import render
+def home(request):
+	return render(request, "home.html")
