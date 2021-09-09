@@ -6,8 +6,7 @@
 <p>{{content}}!</p>
 
 <ul>
-  {% for x in object_list %}
-
+  {% for x in article %}
 </ul>
 {% if x.title %}
 <li><a href='/articles/{{ x.id }}/'>{{x.title }} - {{ x.content }}</a></li>
