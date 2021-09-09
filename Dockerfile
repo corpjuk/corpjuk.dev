@@ -14,6 +14,7 @@ COPY config config
 COPY eatplants eatplants
 COPY accounts accounts
 COPY articles articles
+COPY templates templates
 
 ADD /scripts/docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod a+x /docker-entrypoint.sh
