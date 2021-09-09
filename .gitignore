@@ -6,6 +6,8 @@
 # my files added
 .env
 db.sqlite3
+venv1
+venv1/**
 # Node artifact files
 node_modules/
 dist/
@@ -54,3 +56,4 @@ Thumbs.db
 *.wmv
 
 
+keys
