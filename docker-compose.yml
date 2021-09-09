@@ -1,0 +1,47 @@
+version: "3.2"
+services:
+  db:
+    restart: always
+    image: postgres:10.1-alpine
+    container_name: corpjukdev_pg01
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: pguser123
+    volumes:
+      - ./pg-data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    networks:
+      - main
+  app:
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: corpjukdev_dj01
+    environment:
+      - DJANGO_SETTINGS_MODULE=eatplants.settings.dev
+      - PYTHONDONTWRITEBYTECODE=1
+    volumes:
+      - ./static:/app/static
+    networks:
+      - main
+    depends_on:
+      - db
+  nginx:
+    restart: always
+    image: nginx:1.15-alpine
+    container_name: corpjukdev_ng01
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./static:/usr/share/nginx/corpjukdev/static
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - main
+    depends_on:
+      - app
+networks:
+  main:
