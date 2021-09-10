@@ -57,3 +57,8 @@ Thumbs.db
 
 
 keys
+
+pg-data/
+pg-data/**
+venv1/
+venv1/**
