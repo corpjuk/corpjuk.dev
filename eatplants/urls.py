@@ -26,7 +26,7 @@ from articles.views import (
     article_create_view,
     article_detail_view,
 )
-from .views import home_view
+from .views import home_view, home
 
 #the order matters for URLS
 urlpatterns = [
