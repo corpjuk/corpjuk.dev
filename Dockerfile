@@ -8,8 +8,10 @@ WORKDIR /app
 COPY manage.py /app/
 COPY requirements/ /app/requirements
 
+
 RUN pip install -r requirements/dev.txt
 
+COPY logs logs
 COPY config config
 COPY eatplants eatplants
 COPY accounts accounts
@@ -18,6 +20,8 @@ COPY templates templates
 
 ADD /scripts/docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod a+x /docker-entrypoint.sh
+RUN sh -c 'touch logs/eatplants.log'
+RUN sh -c 'touch logs/eatplantsdebug.log'
 
 EXPOSE 8001
 

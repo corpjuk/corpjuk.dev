@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure--$(iw=q)rdu%xe4+y+xg1kh+-j18l8#(%8uosq_gz3^$r6ckl&')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = str(os.environ.get('DEBUG')) == "1" # 1 == True
+DEBUG = FALSE # 1 == True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [u'corpjuk.dev', u'www.corpjuk.dev', u'147.182.172.85']
 if not DEBUG:
     ALLOWED_HOSTS += [os.environ.get('DJANGO_ALLOWED_HOST')]
 
@@ -86,6 +86,54 @@ DATABASES = {
     }
 }
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+        'prodfilelogger': {
+            'level':'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': join(LOG_ROOT, 'corpjukdevsite.log'),
+            'filters': ['require_debug_false'],
+            'maxBytes': 1024*1042*15, # 15 MB
+            'backupCount': 10,
+            'formatter': 'verbose'
+        },      
+        'devfilelogger': {
+            'level':'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': join(LOG_ROOT, 'corpjukdevdebug.log'),
+            'filters': ['require_debug_true'],
+            'maxBytes': 1024*1024*15, # 15 MB
+            'backupCount': 10,
+            'formatter': 'verbose'
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': False,
+        },
+        'corpjukdev': {
+            'handlers': ['prodfilelogger'],
+            'level': 'INFO', 
+        },        
+        'corpjukdev': {
+            'handlers': ['devfilelogger'],
+            'level': 'DEBUG',
+        },
+    },
+}
+
+LOG_ROOT = normpath(join(BASE_DIR, 'logs'))
 
 POSTGRES_DB = os.environ.get("POSTGRES_DB")
 POSTGRES_PASSWORD = os.environ.get("POSTGRES_PASSWORD")

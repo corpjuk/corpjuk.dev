@@ -25,7 +25,8 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure--$(iw=q)rdu%xe
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = str(os.environ.get('DEBUG')) == "1" # 1 == True
 
-ALLOWED_HOSTS = [u'147.182.172.85']
+ALLOWED_HOSTS = [u'147.182.172.85', u'corpjuk.dev', u'www.corpjuk.dev']
+
 DEBUG = False
 #if not DEBUG:
 #    ALLOWED_HOSTS += [os.environ.get('DJANGO_ALLOWED_HOST')]
@@ -55,6 +56,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'eatplants.urls'
 LOGIN_URL='/login/'
+LOG_ROOT = normpath(join(BASE_DIR, 'logs'))
 
 TEMPLATES = [
     {
