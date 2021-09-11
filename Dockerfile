@@ -9,7 +9,6 @@ WORKDIR /app
 COPY manage.py /app/
 COPY requirements/ /app/requirements
 
-
 RUN pip install -r $requirements
 
 COPY logs logs

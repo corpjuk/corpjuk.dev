@@ -162,32 +162,46 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-            'datefmt' : "%d/%b/%Y %H:%M:%S"
-        },
-        'simple': {
-            'format': '%(levelname)s %(message)s'
-        },
-    },
     'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': 'mysite.log',
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+        'prodfilelogger': {
+            'level':'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': join(LOG_ROOT, 'corpjuksite.log'),
+            'filters': ['require_debug_false'],
+            'maxBytes': 1024*1042*15, # 15 MB
+            'backupCount': 10,
+            'formatter': 'verbose'
+        },      
+        'devfilelogger': {
+            'level':'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': join(LOG_ROOT, 'corpjukdebug.log'),
+            'filters': ['require_debug_true'],
+            'maxBytes': 1024*1024*15, # 15 MB
+            'backupCount': 10,
             'formatter': 'verbose'
         },
     },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
     'loggers': {
         'django': {
-            'handlers':['file'],
-            'propagate': True,
-            'level':'DEBUG',
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': False,
         },
-        'eatplants': {
-            'handlers': ['file'],
+        'sdev': {
+            'handlers': ['prodfilelogger'],
+            'level': 'INFO', 
+        },        
+        'sdev': {
+            'handlers': ['devfilelogger'],
             'level': 'DEBUG',
         },
-    }
+    },
 }
