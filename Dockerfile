@@ -1,6 +1,7 @@
 FROM python:3.8
 LABEL maintainer justin@corpjuk.dev
 
+ARG requirements=requirements/dev.txt
 ENV DJANGO_SETTINGS_MODULE=eatplants.settings.dev
 
 WORKDIR /app
@@ -9,7 +10,7 @@ COPY manage.py /app/
 COPY requirements/ /app/requirements
 
 
-RUN pip install -r requirements/dev.txt
+RUN pip install -r $requirements
 
 COPY logs logs
 COPY config config
