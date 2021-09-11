@@ -1,7 +1,7 @@
 FROM python:3.6
 LABEL maintainer justin@corpjuk.dev
 
-ARG requirements=requirements/production.txt
+ARG requirements=requirements/prod.txt
 ENV DJANGO_SETTINGS_MODULE=eatplants.settings.prod
 
 WORKDIR /app
