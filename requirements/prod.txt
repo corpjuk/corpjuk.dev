@@ -1,3 +1,4 @@
 psycopg2
 gunicorn
+json-logging-py
 -r base.txt

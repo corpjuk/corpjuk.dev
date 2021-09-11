@@ -1,15 +1,15 @@
-FROM python:3.8
+FROM python:3.6
 LABEL maintainer justin@corpjuk.dev
 
-ENV DJANGO_SETTINGS_MODULE=eatplants.settings.dev
+ARG requirements=requirements/production.txt
+ENV DJANGO_SETTINGS_MODULE=eatplants.settings.prod
 
 WORKDIR /app
 
 COPY manage.py /app/
-COPY requirements/ /app/requirements
+COPY requirements/ /app/requirements/ 
 
-
-RUN pip install -r requirements/dev.txt
+RUN pip install -r $requirements
 
 COPY logs logs
 COPY config config
@@ -28,5 +28,4 @@ EXPOSE 8001
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
-CMD ["/usr/local/bin/gunicorn", "--config", "config/gunicorn.py", "--log-config", "config/logging.conf", "-e", "DJANGO_SETTINGS_MODULE=eatplants.settings.dev", "-w", "4", "-b", "0.0.0.0:8001", "eatplants.wsgi:application"]
-
+CMD ["/usr/local/bin/gunicorn", "--config", "config/gunicorn.conf", "--log-config", "config/logging.conf", "-e", "DJANGO_SETTINGS_MODULE=sasite.settings.production", "-w", "4", "-b", "0.0.0.0:8001", "sasite.wsgi:application"]
