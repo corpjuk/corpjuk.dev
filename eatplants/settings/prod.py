@@ -15,8 +15,8 @@ from os.path import join, normpath, dirname, abspath
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-LOG_ROOT = normpath(join(BASE_DIR, 'logs'))
 TEMPLATE_BASE = Path(__file__).resolve().parent.parent.parent
+LOG_ROOT = BASE_DIR.parent / 'logs'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -90,14 +90,37 @@ DATABASES = {
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },        
+    },
     'handlers': {
         'console': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
             'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        },
+        'null': {
+            'class': 'logging.NullHandler',
         },
         'prodfilelogger': {
             'level':'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': join(LOG_ROOT, 'corpjukdevsite.log'),
+            'filename': join(str(LOG_ROOT), 'corpjuksite.log'),
             'filters': ['require_debug_false'],
             'maxBytes': 1024*1042*15, # 15 MB
             'backupCount': 10,
@@ -106,35 +129,44 @@ LOGGING = {
         'devfilelogger': {
             'level':'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': join(LOG_ROOT, 'corpjukdevdebug.log'),
+            'filename': join(str(LOG_ROOT), 'corpjukdebug.log'),
             'filters': ['require_debug_true'],
             'maxBytes': 1024*1024*15, # 15 MB
             'backupCount': 10,
             'formatter': 'verbose'
         },
     },
-    'root': {
-        'handlers': ['console'],
-        'level': 'WARNING',
-    },
     'loggers': {
         'django': {
-            'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'handlers': ['console', 'devfilelogger', 'prodfilelogger'],
+        },
+        'django.request': {
+            'handlers': ['devfilelogger', 'prodfilelogger'],
+            'level': 'WARNING',
             'propagate': False,
         },
-        'corpjukdev': {
+        'django.security': {
+            'handlers': ['devfilelogger', 'prodfilelogger'],
+            'level': 'WARNING',
+            'propagate': False,
+        },
+        'py.warnings': {
+            'handlers': ['console', 'prodfilelogger', 'devfilelogger'],
+        },
+        'eatplants': { 
+            'handlers': ['prodfilelogger', 'devfilelogger'],
+            'level': 'WARNING', 
+        },
+        'eatplants': {
             'handlers': ['prodfilelogger'],
             'level': 'INFO', 
         },        
-        'corpjukdev': {
+        'eatplants': {
             'handlers': ['devfilelogger'],
             'level': 'DEBUG',
         },
-    },
+    }
 }
-
-LOG_ROOT = normpath(join(BASE_DIR, 'logs'))
 
 POSTGRES_DB = os.environ.get("POSTGRES_DB")
 POSTGRES_PASSWORD = os.environ.get("POSTGRES_PASSWORD")
@@ -200,6 +232,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = TEMPLATE_BASE / 'static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+from os.path import abspath, basename, dirname, join, normpath
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -56,7 +57,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'eatplants.urls'
 LOGIN_URL='/login/'
-LOG_ROOT = normpath(join(BASE_DIR, 'logs'))
 
 TEMPLATES = [
     {
@@ -158,6 +158,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = TEMPLATE_BASE / 'static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

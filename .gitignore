@@ -21,6 +21,10 @@ dist/
 
 # Log files
 *.log
+logs
+logs/**
+corpjukdebug.log
+corpjuksite.log
 
 # Package files
 lib/

@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+from os.path import abspath, basename, dirname, join, normpath
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -153,55 +154,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = TEMPLATE_BASE / 'static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-        'prodfilelogger': {
-            'level':'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': join(LOG_ROOT, 'corpjuksite.log'),
-            'filters': ['require_debug_false'],
-            'maxBytes': 1024*1042*15, # 15 MB
-            'backupCount': 10,
-            'formatter': 'verbose'
-        },      
-        'devfilelogger': {
-            'level':'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': join(LOG_ROOT, 'corpjukdebug.log'),
-            'filters': ['require_debug_true'],
-            'maxBytes': 1024*1024*15, # 15 MB
-            'backupCount': 10,
-            'formatter': 'verbose'
-        },
-    },
-    'root': {
-        'handlers': ['console'],
-        'level': 'WARNING',
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
-            'propagate': False,
-        },
-        'sdev': {
-            'handlers': ['prodfilelogger'],
-            'level': 'INFO', 
-        },        
-        'sdev': {
-            'handlers': ['devfilelogger'],
-            'level': 'DEBUG',
-        },
-    },
-}
