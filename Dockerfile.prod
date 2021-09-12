@@ -1,4 +1,4 @@
-FROM python:3.6
+FROM python:3.8
 LABEL maintainer justin@corpjuk.dev
 
 ARG requirements=requirements/prod.txt
