@@ -22,8 +22,9 @@ TEMPLATE_BASE = Path(__file__).resolve().parent.parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = r'django-insecure--$(iw=q)rdu%xe4+y+xg1kh+-j18l8#(%8uosq_gz3^$r6ckl&'
 
+SECRET_KEY = r'django-insecure--$(iw=q)rdu%xe4+y+xg1kh+-j18l8#(%8uosq_gz3^$r6ckl&'
+#SECRET_KEY = r'abc4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
