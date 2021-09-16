@@ -1,16 +1,27 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from django.http import Http404
+from django.contrib.auth.decorators import login_required
 
 from .models import Article
 from .forms import ArticleForm
 
-from django.contrib.auth.decorators import login_required
+
+
 # Create your views here.
 
 
-def article_detail_view(request, id=None, *args, **kwargs):
+def article_detail_view(request, slug=None, *args, **kwargs):
     article_obj = None
-    if id is not None:
-        article_obj = Article.objects.get(id=id)
+    if slug is not None:
+        try:
+            article_obj = Article.objects.get(slug=slug)
+        except Article.DoesNotExist:
+            raise Http404
+        except  Article.MultipleObjectsReturned:
+            article_obj = Article.objects.filter(slug=slug).first()
+            # a little confused why it gets set to first
+        except:
+            raise Http404
     context = {
         "object": article_obj,
     }
@@ -27,13 +38,14 @@ def article_search_view(request):
         query = int(query_dict.get("q"))
     except:
         query = None
-    article_obj = None
-
+    #article_obj = None
+    qs = Article.objects.all()
     if query is not None:
-        article_obj = Article.objects.get(id=query)
-
+        #article_obj = Article.objects.get(id=query)
+        qs = Article.objects.filter(title__icontains=query)
     context = {
-        "object": article_obj,
+        # "object": article_obj,
+        "object_list": qs
     }
     return render(request, "articles/search.html", context=context)
 
@@ -49,6 +61,9 @@ def article_create_view(request):
     if form.is_valid():
         article_object = form.save()
         context['form'] = ArticleForm()
+        return redirect(article_object.get_absolute_url())
+        # A different way to do the return redirect
+        # return redirect("article-detail", slug=article_object.slug)
         # context['object'] = article_object
         # context['created'] = True
     return render(request, "articles/create.html", context=context)

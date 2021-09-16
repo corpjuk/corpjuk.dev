@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models.signals import pre_save, post_save
 from django.utils import timezone
-
+from django.urls import reverse
 from .utils import slugify_instance_title
 
 # Create your models here.
@@ -18,6 +18,10 @@ class Article(models.Model):
     publish = models.DateField(auto_now_add=False,auto_now=False, default=timezone.now, blank=True)
      # null=true, blank=true. null means in db it can be empty value, blank means on forms/admin it can be empty value
 
+    def get_absolute_url(self):
+        # return f'/articles/{self.slug}'
+        return reverse("article-detail", kwargs={"slug": self.slug})
+
     def save(self, *args, **kwargs):
         #set something 
         # if self.slug is None:
@@ -29,7 +33,7 @@ class Article(models.Model):
 
 def article_pre_save(sender, instance, *args, **kwargs):
     #pre save - saves before the save signal
-    print('pre_save')
+    #print('pre_save')
     #print(sender, instance) #good to know and for future use
     if instance.slug is None:
         slugify_instance_title(instance, save=False)
@@ -38,7 +42,7 @@ pre_save.connect(article_pre_save, sender=Article)
 
 def article_post_save(sender, instance, created, *args, **kwargs):
     #post save - saves after the save signal
-    print('post_save')
+    #print('post_save')
     #print(args, kwargs)
     if created:
         slugify_instance_title(instance, save=True)
