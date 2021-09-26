@@ -68,3 +68,4 @@ venv1/
 venv1/**
 data/
 data/**
+package-lock.json

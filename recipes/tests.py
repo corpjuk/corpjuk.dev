@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
@@ -52,6 +53,18 @@ class RecipeTestCase(TestCase):
             quantity='1/2',
             unit='pound',
         )
+        self.recipe_ingredient_b = RecipeIngredient.objects.create(
+            recipe = self.recipe_a,
+            name='Nutritional Yeast',
+            quantity='adasdad',
+            unit='cup',
+        )
+        self.recipe_ingredient_c = RecipeIngredient.objects.create(
+            recipe = self.recipe_a,
+            name='Chickpeas',
+            quantity='1/2',
+            unit='pound',
+        )
     
     def test_user_count(self):
         qs = User.objects.all()
@@ -84,19 +97,19 @@ class RecipeTestCase(TestCase):
         recipe = self.recipe_a
         qs=recipe.recipeingredient_set.all()
         #print(qs)
-        self.assertEqual(qs.count(), 1)
+        self.assertEqual(qs.count(), 3)
 
     def test_user_recipe_ingredient_forward_count(self):
         recipe = self.recipe_a
         qs=RecipeIngredient.objects.filter(recipe=recipe)
         #print(qs)
-        self.assertEqual(qs.count(), 1)
+        self.assertEqual(qs.count(), 3)
 
     def test_user_two_level_relation(self):
         user = self.user_a
         qs = RecipeIngredient.objects.filter(recipe__user=user)
         print(qs)
-        self.assertEqual(qs.count(), 1)
+        self.assertEqual(qs.count(), 3)
 
     # a two level reverse relationship is not something done often
     # You can have more levels than this 3 levels, 4 levels, etc
@@ -112,14 +125,60 @@ class RecipeTestCase(TestCase):
         recipeingredient_ids = list(user.recipe_set.all().values_list('recipeingredient__id', flat=True))
         qs = RecipeIngredient.objects.filter(id__in=recipeingredient_ids)
         print(recipeingredient_ids)
-        self.assertEqual(qs.count(), 1)
+        self.assertEqual(qs.count(), 3)
 
     def test_user_two_level_relation_via_recipes(self):
         user = self.user_a
         ids = user.recipe_set.all().values_list('id', flat=True)
         qs = RecipeIngredient.objects.filter(recipe__id__in=ids)
         #print(qs)
-        self.assertEqual(qs.count(), 1)
+        self.assertEqual(qs.count(), 3)
+
+    def test_unit_measure_validation(self):
+        ingredient = RecipeIngredient(
+            name='New',
+            quantity='2',
+            recipe=self.recipe_a,
+            unit='oz'
+        )
+        ingredient.full_clean()
+
+    # TESTS IF A UNIT OF MEASURE IS VALID
+    def test_unit_measure_validation(self):
+            # nada will raise the Validation Error
+            #invalid_unit = 'nada'
+            # ounce will not raise the Validation Error and the test will Fail
+            invalid_unit = 'ounce'
+            ingredient = RecipeIngredient(
+                name='New',
+                quantity=10,
+                recipe=self.recipe_a,
+                unit=invalid_unit
+            )
+            ingredient.full_clean()
+
+    # testing for an error
+    def test_unit_measure_validation_error(self):
+        # nade will raise the Validation Error
+        invalid_unit = 'nada'
+        # ounce will not raise the Validation Error and the test will Fail
+        #invalid_unit = 'ounce'
+        with self.assertRaises(ValidationError):
+            ingredient = RecipeIngredient(
+                name='New',
+                quantity='2',
+                recipe=self.recipe_a,
+                unit=invalid_unit
+            )
+            ingredient.full_clean()
+        # form.is_valid() we did on a view
+
+def test_quantity_as_float(self):
+
+    self.assertIsNotNone(self.recipe_ingredient_a.quantity_as_float)
+    self.assertIsNone(self.recipe_ingredient_b.quantity_as_float)
+
+
     
     # I tried to write a test_recipe_case without creating the Recipe.objects.create()
     # def test_recipe_case(TestCase):
