@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Articles Page.</h1>
+<p>All articles.</p>
+
+
+<!-- <a href='{% url "article-create" %}'>Create Article</a>
+<a href='{% url "articles" %}'>Articles</a>
+<a href='{% url "register" %}'>Register</a>
+<a href='{% url "article-detail" slug="hello-world" %}'>Hello world article</a> -->
+<ul>
+  {% for x in article %}
+</ul>
+{% if x.title %}
+<li><a href='{{ x.get_absolute_url }}'>{{x.title }} - {{ x.content }}</a></li>
+
+{% endif %} 
+{% endfor %} 
+
+{% endblock content %}

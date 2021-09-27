@@ -156,6 +156,7 @@ class RecipeTestCase(TestCase):
                 unit=invalid_unit
             )
             ingredient.full_clean()
+            # we are not calling .save on these functions
 
     # testing for an error
     def test_unit_measure_validation_error(self):
