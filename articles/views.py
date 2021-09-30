@@ -35,11 +35,11 @@ def article_search_view(request):
     context = {
         "object_list": qs
     }
-    if query == None:
-        context = {'article': Article.objects.all(),}
-        return render(request, "articles/articles.html", context=context)
-    else:
-        return render(request, "articles/search.html", context=context)
+    # if query == None:
+    #     context = {'article': Article.objects.all(),}
+    #     return render(request, "articles/articles.html", context=context)
+    # else:
+    return render(request, "articles/search.html", context=context)
 
 
 # Notes version down below
