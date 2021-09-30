@@ -6,6 +6,9 @@ from django.template.loader import render_to_string
 from django.shortcuts import render
 
 def home_view(request, id=None, *args, **kwargs):
-    context = {'article': Article.objects.all(),}
+    articles = Article.objects.all()
+    context = { 
+        'articles': articles
+    }
     return render(request, 'home-view.html', context)
 

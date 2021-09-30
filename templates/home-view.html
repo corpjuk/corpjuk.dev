@@ -6,12 +6,12 @@
 <p>it's easy.</p>
 
 
-<!-- <a href='{% url "articles:create" %}'>Create Article</a>
-<a href='{% url "articles" %}'>Articles</a>
+<a href='{% url "articles:create" %}'>Create Article</a>
+<a href='{% url "articles:search" %}'>Articles</a>
 <a href='{% url "register" %}'>Register</a>
-<a href='{% url "articles:detail" slug="hello-world" %}'>Hello world article</a> -->
+<a href='{% url "articles:detail" slug="hello-world" %}'>Hello world article</a>
 <ul>
-  {% for x in article %}
+  {% for x in articles %}
 </ul>
 {% if x.title %}
 <li><a href='{{ x.get_absolute_url }}'>{{x.title }} - {{ x.content }}</a></li>

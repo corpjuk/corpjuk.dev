@@ -8,6 +8,10 @@
 db.sqlite3
 venv1
 venv1/**
+venv2
+venv2/**
+venv*
+venv*/
 # Node artifact files
 node_modules/
 dist/
