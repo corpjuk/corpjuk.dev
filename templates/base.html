@@ -5,11 +5,25 @@
 
   </head>
   <body>
-    <h1>Hello World</h1>
-    <h3>Hello test</h3>
-    <p>Eat plants only.</p>
+    <h1>Eat plants only project</h1>
+    <p>Here at the eat plants only project we want to teach and educate on being better everyday, as practically as we can, and as educated as we can. The Eat Plants Only Project wants to promote veganism
+      and the immense benefits it has. We want to promote what the human species does best - sit on our butts and eat all day. If you eat just plants alone - say RICE & BEANS,
+      NOT ONLY can you sit on your butt all day and not exercise, you'll still lose weight.
+      We sit on our butts and eat. Here we teach that you can do that with a plant based diet! A plant based diet has saved many lives of people
+      suffering with diabetes, cancer, cardiovascular disease, obesity, and many more. It has also been studied that meat, dairy, eggs, and fish cause
+      these diseases within the human body. We hope that a plant based diet can be the gateway to veganism, because that is the underlining
+      cause of so many planetary probems including the genocide of animals.
+    </p>
     <p>Let's eat plants, it's easy.</p>
-
+    <a href='{% url "home" %}'>Home</a>
+    <a href='{% url "articles:search" %}'>Articles</a>
+    <a href='{% url "register" %}'>Register</a>
+    <a href='{% url "articles:create" %}'>Create Article</a>
+    <a href='{% url "articles:detail" slug="hello-world" %}'>Hello world article</a>
+    <form action='/articles/' method='GET'>
+      <input type='text' name='q'/>
+      <input type='submit' />
+    </form>
     {% block content %} {% endblock content %}
   </body>
 </html>
