@@ -1,0 +1,25 @@
+{% extends "base.html" %} 
+
+{% block content %}
+
+{% if message %}
+
+<p>{{ message }}
+
+{% endif %}
+
+<div style='margin-top:30px'>
+<form action='.' method ="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    {% if formset %}
+    <h3>Incredients</h3>
+    {{ formset.as_p }}
+
+    {% endif %}
+    <button style='margin-top:10px;' type='submit'>Save</button>
+</form>
+</div>
+
+{% endblock content %}

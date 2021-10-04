@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Vegan Recipes.</h1>
+<p>1 vegan = 100 animals lives per year</p>
+
+
+
+<a href='{% url "recipes:create" %}'>Add Recipe</a>
+
+<ul>
+  {% comment %}
+
+  object_list is the context in the recipes/views.py
+  This is an important variable to match when displaying the object and data.
+
+  {% endcomment %}
+  
+  {% for x in object_list %}
+    <li><a href='{{ x.get_absolute_url }}'>{{x.name}}</a></li>
+  {% endfor %} 
+</ul>
+
+{% endblock content %}

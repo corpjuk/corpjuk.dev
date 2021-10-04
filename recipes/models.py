@@ -18,6 +18,11 @@ class Recipe(models.Model):
 
     def get_absolute_url(self):
         return reverse("recipes:detail", kwargs={"id": self.id })
+    def get_edit_url(self):
+        return reverse("recipes:update", kwargs={"id": self.id})
+
+    def get_ingredients_children(self):
+        return self.recipeingredient_set.all()
     
 
 class RecipeIngredient(models.Model):
@@ -34,6 +39,7 @@ class RecipeIngredient(models.Model):
 
     def get_absolute_url(self):
         return self.recipe.absolute_url()
+    
 
     def convert_to_system(self, system="mks"):
         if self.quantity_as_float is None:
