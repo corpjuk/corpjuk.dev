@@ -35,7 +35,7 @@ urlpatterns = [
     path('pantry/recipes/', include('recipes.urls')),
     path('articles/', include('articles.urls')),
     path('admin/', admin.site.urls),
-    path('login/', login_view),
+    path('login/', login_view, name='login'),
     path('logout/', logout_view),
     path('register/', register_view, name='register'),
 ]

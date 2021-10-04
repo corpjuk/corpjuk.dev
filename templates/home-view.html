@@ -2,14 +2,15 @@
 
 {% block content %}
 
-<h1>Eat plants.</h1>
-<p>it's easy.</p>
+<h1>Eat plants. It's easy.</h1>
+<p>We need everyone's help to reduse and eliminate our need for meat and all animal products. We can make change and it is our time to act.</p>
 
-
+{% comment %}
 <a href='{% url "articles:create" %}'>Create Article</a>
 <a href='{% url "articles:search" %}'>Articles</a>
 <a href='{% url "register" %}'>Register</a>
 <a href='{% url "articles:detail" slug="hello-world" %}'>Hello world article</a>
+{% endcomment %}
 
 <ul>
   {% for x in articles %}
