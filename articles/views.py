@@ -10,6 +10,14 @@ from .forms import ArticleForm
 
 # Create your views here.
 
+def article_list_view(request):
+    # qs = Article.objects.filter(user=request.user)
+    qs = Article.objects.all()
+    context = {
+        'object_list': qs 
+    }
+    return(render, "articles/articles.html", context)
+
 
 def article_detail_view(request, slug=None, *args, **kwargs):
     article_obj = None
@@ -35,11 +43,11 @@ def article_search_view(request):
     context = {
         "object_list": qs
     }
-    # if query == None:
-    #     context = {'article': Article.objects.all(),}
-    #     return render(request, "articles/articles.html", context=context)
-    # else:
-    return render(request, "articles/search.html", context=context)
+    if query == None:
+        context = {'article': Article.objects.all(),}
+        return render(request, "articles/articles.html", context=context)
+    else:
+        return render(request, "articles/search.html", context=context)
 
 
 # Notes version down below
