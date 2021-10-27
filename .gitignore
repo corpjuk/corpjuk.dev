@@ -73,3 +73,4 @@ venv1/**
 data/
 data/**
 package-lock.json
+CNA/
