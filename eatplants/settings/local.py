@@ -15,18 +15,23 @@ from os.path import abspath, basename, dirname, join, normpath
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+DOTENV_DIR = Path(__file__).resolve().parent.parent
 TEMPLATE_BASE = Path(__file__).resolve().parent.parent.parent
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-dotenv_file = os.path.join(BASE_DIR, ".env")
-if os.path.isfile(dotenv_file):
-    dotenv.load_dotenv(dotenv_file)
+dotenv_file = BASE_DIR / '.env'
+if dotenv_file.is_file():
+    dotenv.read_dotenv(dotenv_file)
+
+# dotenv_file = os.path.join(BASE_DIR, ".env")
+# if os.path.isfile(dotenv_file):
+#     dotenv.read_dotenv(dotenv_file)
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -62,13 +67,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'eatplants.urls'
 LOGIN_URL='/login/'
-STATIC_URL = '/static/'
-STATIC_ROOT = TEMPLATE_BASE / 'static'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
+            #os.path.join(TEMPLATE_BASE, "templates")
             TEMPLATE_BASE / "templates",
         ],
         'APP_DIRS': True,
@@ -160,8 +164,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+
+#STATIC_ROOT = normpath(join(BASE_DIR, 'static'))
+#STATIC_ROOT = BASE_DIR / 'static'
 STATIC_URL = '/static/'
-STATIC_ROOT = TEMPLATE_BASE / 'static'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static'
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
