@@ -25,7 +25,11 @@ class RecipeForm(forms.ModelForm):
             print(field)
             new_data = {
                 "placeholder": f'Recipe {str(field)}',
-                "class": 'form-control'
+                "class": 'form-control',
+                # "hx-post": ".",
+                # "hx-trigger": "keyup changed delay:500ms",
+                # "hx-target": "#recipe-container",
+                # "hx-swap": "outerHTML",
             }
             # str(field) = 'name', 'description', 'directions'
             self.fields[str(field)].widget.attrs.update(

@@ -3,8 +3,24 @@
   <head> 
     
     <script src="https://unpkg.com/htmx.org@1.5.0"></script>
-    {% load static %}
-    <link type="text/css" href="{% static 'style.css' %}" rel="stylesheet">
+    <style>
+        .htmx-indicator {
+          display: none;
+        }
+        .htmx-request .htmx-indicator {
+          display: inline;
+        }
+        .htmx-inverted-indicator {
+          display: inline;
+        }
+        .htmx-request .htmx-inverted-indicator {
+          display: none;
+        }
+
+    </style>
+    <!-- The static style sheet below removes all css basically. -->
+    <!-- {% load static %}
+    <link type="text/css" href="{% static 'style.css' %}" rel="stylesheet"> -->
 
   </head>
   <body>

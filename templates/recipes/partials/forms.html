@@ -14,11 +14,10 @@
     </form>
 
 {% endcomment %}
-<form action='.' method="POST" hx-post='.' hx-swap='outerHTML'>
+<div id='recipe-container'>
+<form action='.' method="POST" hx-post='.' hx-swap='outerHTML' hx-trigger='{% if form.instance.id %}change delay:500ms,{% endif %}submit'>
     {% csrf_token %}
-    {% if message %}
-    <p>{{ message }}</p>
-    {% endif %}
+    
    {% for field in form %}
    <div class='{% if field.field.required %}{{ form.required_css_class }}{%endif%}'>
     {{ field.errors }}   
@@ -30,19 +29,11 @@
    {% endfor %}
 
 
-    {% if formset %}
-    <h3>Ingredients</h3>
-    {{ formset.management_form }}
-    <div id='ingredient-form-list'>
-        {% for form in formset %}
-                <div class='ingredient-form'>
-                    {{ form.as_p }}
-                </div>
-        {% endfor %}
-    </div>
-
-    <div id='empty-form' class='hidden'>{{ formset.empty_form.as_p }}</div>
-    <button id='add-more' type='button'>Add more</button>
+    
+    <div class='htmx-indicator'>Loading...</div>
+    <button class='htmx-inverted-indicator' style='margin-top:10px;' type='submit' >Save</button>
+    {% if message %}
+    <p>{{ message }}</p>
     {% endif %}
-    <button style='margin-top:10px;' type='submit' >Save</button>
 </form>
+</div>
