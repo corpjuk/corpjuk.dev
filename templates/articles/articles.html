@@ -7,9 +7,9 @@
 
 
 
-<ul>
-  {% for x in articles %}
-</ul>
+
+{% for x in object_list %}
+
 {% if x.title %}
 <li><a href='{{ x.get_absolute_url }}'>{{x.title }} - {{ x.content }}</a></li>
 

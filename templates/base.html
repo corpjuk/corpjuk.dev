@@ -25,6 +25,7 @@
   </head>
   <body>
     <h1>Eat plants only project</h1>
+    {% include 'search/search-form.html' %}
     <p>Here at the eat plants only project we want to teach and educate on being better everyday, as practically as we can, and as educated as we can. The Eat Plants Only Project wants to promote veganism
       and the immense benefits it has. We want to promote what the human species does best - sit on our butts and eat all day. If you eat just plants alone - say RICE & BEANS,
       NOT ONLY can you sit on your butt all day and not exercise, you'll still lose weight.
@@ -46,10 +47,7 @@
     <a href='{% url "recipes:create" %}'>Create Recipes</a>
     <a href='{% url "register" %}'>Register</a>
     <a href='{% url "login" %}'>Login</a>
-    <form action='/articles/' method='GET'>
-      <input type='text' name='q'/>
-      <input type='submit' />
-    </form>
+    
     {% block content %} {% endblock content %}
   </body>
 </html>
