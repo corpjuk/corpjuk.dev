@@ -16,6 +16,8 @@ COPY config config
 COPY eatplants eatplants
 COPY accounts accounts
 COPY articles articles
+COPY recipes recipes
+COPY search search
 COPY templates templates
 
 RUN sh -c 'touch logs/corpjuksite.log'
