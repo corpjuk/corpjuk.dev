@@ -44,10 +44,15 @@
     {% endcomment %}
     <a href='{% url "recipes:list" %}'>Recipes</a>
     <a href='{% url "articles:create" %}'>Create Article</a>
-    <a href='{% url "recipes:create" %}'>Create Recipes</a>
+    <!-- <a href='{% url "recipes:create" %}'>Create Recipes</a> -->
     <a href='{% url "register" %}'>Register</a>
     <a href='{% url "login" %}'>Login</a>
     
     {% block content %} {% endblock content %}
+      <script>
+        document.body.addEventListener("htmx:configRequest", (event)=>{
+          event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}'
+        })
+      </script>
   </body>
 </html>
