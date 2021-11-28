@@ -26,6 +26,51 @@ def recipe_detail_view(request, id=None):
     return render(request, "recipes/detail.html", context) 
 
 @login_required
+def recipe_delete_view(request, id=None):
+    try:
+        obj = Recipe.objects.get(id=id, user=request.user)
+    except:
+        obj = None
+    if obj is None:
+        if request.htmx:
+            return HttpResponse("Not Found")
+        raise Http404
+    if request.method == "POST":
+        obj.delete()
+        success_url = reverse('recipes:list')
+        if request.htmx:
+            headers = {
+                'HX-Redirect': success_url
+            }
+            return HttpResponse("Success", headers=headers)
+        return redirect(success_url)
+    context = {
+        "object": obj
+    }
+    return render(request, "recipes/delete.html", context)
+
+@login_required
+def recipe_ingredient_delete_view(request, parent_id=None, id=None):
+    try:
+        obj = RecipeIngredient.objects.get(recipe__id=parent_id, id=id, recipe__user=request.user)
+    except:
+        obj = None
+    if obj is None:
+        if request.htmx:
+            return HttpResponse("Not Found")
+        raise Http404
+    if request.method == "POST":
+        obj.delete()
+        success_url = reverse('recipes:detail', kwargs={"id": parent_id})
+        if request.htmx:
+            return HttpResponse("Ingredient Removed")
+        return redirect(success_url)
+    context = {
+        "object": obj
+    }
+    return render(request, "recipes/delete.html", context)
+
+@login_required
 def recipe_detail_hx_view(request, id=None):
     if not request.htmx:
         raise Http404
@@ -55,9 +100,14 @@ def recipe_create_view(request):
         if request.htmx:
             headers = {
                 "HX-Redirect": obj.get_absolute_url()
+                # Look into how to push to a new URL
+                #"HX-PUSH": obj.get_absolute_url()
             }
             return HttpResponse("Created", headers=headers)
-
+            # context = {
+            #     "object": obj
+            # }
+            # return render(request, "recipes/partials/detail.html", context) 
             
         return redirect(obj.get_absolute_url())
     return render(request, "recipes/create-update.html", context)  
