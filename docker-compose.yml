@@ -21,6 +21,7 @@ services:
       dockerfile: Dockerfile.prod
     container_name: corpjukdev_dj01
     environment:
+      - SECRET_KEY="${SECRET_KEY}"
       - DJANGO_SETTINGS_MODULE=eatplants.settings.prod
       - PYTHONDONTWRITEBYTECODE=1
     volumes:
@@ -30,7 +31,7 @@ services:
     depends_on:
       - db
     env_file:
-      - ./.env
+      - .env
   nginx:
     restart: always
     image: nginx:1.15-alpine
