@@ -30,7 +30,7 @@ services:
     depends_on:
       - db
     env_file:
-      - .env
+      - ./.env
   nginx:
     restart: always
     image: nginx:1.15-alpine
