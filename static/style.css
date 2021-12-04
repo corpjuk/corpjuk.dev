@@ -1,0 +1,49 @@
+/* undohtml.css */
+/* Abridged */
+*,
+*::before,
+*::after{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 1em;
+}
+
+/* Set core body defaults */
+body{
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select{
+  font: inherit;
+}
+
+/* Remove underlines for links */
+:link,
+:visited{
+    text-decoration: none;
+}
+
+/* Remove bullet points */
+ul,
+ol{
+    list-style: none;
+}
+
+a img,
+:link img,
+:visited img{
+    border: none;
+}
+
+/* Removes italics from address */
+address{
+    font-style: normal;
+} 
