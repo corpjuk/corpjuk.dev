@@ -5,11 +5,9 @@
 <h1>Articles Page.</h1>
 <p>All articles.</p>
 
-
-
-
-{% for x in object_list %}
-
+<ul>
+  {% for x in article %}
+</ul>
 {% if x.title %}
 <li><a href='{{ x.get_absolute_url }}'>{{x.title }} - {{ x.content }}</a></li>
 
