@@ -1,4 +1,6 @@
 import pint
+import pathlib
+import uuid
 from django.conf import settings
 from django.db.models import Q
 from django.db import models
@@ -62,6 +64,23 @@ class Recipe(models.Model):
 
     def get_ingredients_children(self):
         return self.recipeingredient_set.all()
+
+
+    
+def recipe_ingredient_image_upload_handler(instance, filename):
+    # grabbing file extention
+    fpath = pathlib.Path(filename)
+    new_fname = str(uuid.uuid1()) # uuid1 -> uuid + timestamps
+    return f"static/recipes/ingredient{new_fname}{fpath.suffix}"
+
+
+
+class RecipeIngredientImage(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to=recipe_ingredient_image_upload_handler) # stores path to the file
+    # image
+    # extracted_text
+
 
 class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)

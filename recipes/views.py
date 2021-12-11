@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.http import HttpResponse, Http404
 from django.shortcuts import redirect, render, get_object_or_404
 
-from .forms import RecipeForm, RecipeIngredientForm
+from .forms import RecipeForm, RecipeIngredientForm, RecipeIngredientImageForm
 from .models import Recipe, RecipeIngredient
 # CRUD -> Create Retrieve Update & Delete
 
@@ -129,6 +129,7 @@ def recipe_update_view(request, id=None):
         return render(request, "recipes/partials/forms.html", context)
     return render(request, "recipes/create-update.html", context) 
 
+
 @login_required
 def recipe_ingredient_update_hx_view(request, parent_id=None, id=None):
     if not request.htmx:
@@ -163,6 +164,37 @@ def recipe_ingredient_update_hx_view(request, parent_id=None, id=None):
         context['object'] = new_obj
         return render(request, "recipes/partials/ingredient-inline.html", context) 
     return render(request, "recipes/partials/ingredient-form.html", context) 
+
+
+
+
+"""
+template_name - holds the path to the template that passes html form utilizing htmx
+"""
+def recipe_ingredient_image_upload_view(request, parent_id):
+    template_name = "recipes/upload-image.html"
+    # print request.FILES to see the empty request and then the POST of the file
+    # print(request.FILES)
+    # print(request.FILES.get("image")) # image here is the name of the field in models.py
+    if request.htmx:
+        template_name = "recipes/partials/image-upload-form.html"
+    try:
+        parent_obj = Recipe.objects.get(id=parent_id, user=request.user)
+    except:
+        parent_obj = None
+    if parent_obj is None:
+        raise Http404
+    form = RecipeIngredientImageForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        obj = form.save(commit=False)
+        obj.recipe = parent_obj
+        # obj.recipe_id = parent_id (is the foreign key fieldname _id) just one underscore
+        obj.save()
+        # send image file -> microservice api
+        # microservice api -> data about the file
+        # cloud providers make money from microservice APIs
+        # Data analysis
+    return render(request, template_name, {"form":form})
 
 
 # It is good to know formset, but we're doing it another way

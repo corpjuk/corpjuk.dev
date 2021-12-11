@@ -1,10 +1,17 @@
 from django import forms
+from django.forms import fields
 
-from .models import Recipe, RecipeIngredient
+from .models import Recipe, RecipeIngredient, RecipeIngredientImage
 
 # https://docs.djangoproject.com/en/3.2/ref/forms/widgets/
 # Read Docs - Important
 # There are third party solutions to help with repetitiveness
+
+class RecipeIngredientImageForm(forms.ModelForm):
+
+    class Meta:
+        model = RecipeIngredientImage
+        fields = ['image']
 
 class RecipeForm(forms.ModelForm):
     required_css_class = 'required-field'
