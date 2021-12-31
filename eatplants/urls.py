@@ -18,7 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 
-from accounts.views import (
+from users.views import (
     login_view,
     logout_view,
     register_view,
@@ -35,7 +35,7 @@ urlpatterns = [
     path('articles/', include('articles.urls')),
     path('admin/', admin.site.urls),
     path('login/', login_view, name='login'),
-    path('logout/', logout_view),
+    path('logout/', logout_view, name='logout'),
     path('pantry/recipes/', include('recipes.urls')),
     path('register/', register_view, name='register'),
     path('search/', search_view, name='search')
