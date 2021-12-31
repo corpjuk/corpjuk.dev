@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
-import dotenv
 from pathlib import Path
 from os.path import join, normpath, dirname, abspath
 
@@ -22,8 +21,8 @@ LOG_ROOT = BASE_DIR.parent / 'logs'
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 dotenv_file = os.path.join(BASE_DIR, ".env")
-if os.path.isfile(dotenv_file):
-    dotenv.load_dotenv(dotenv_file)
+# if os.path.isfile(dotenv_file):
+#     dotenv.load_dotenv(dotenv_file)
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
@@ -48,7 +47,8 @@ INSTALLED_APPS = [
     'django_htmx',
     'articles',
     'recipes',
-    'search'
+    'search',
+    'users'
 ]
 
 MIDDLEWARE = [
@@ -61,6 +61,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_htmx.middleware.HtmxMiddleware'
 ]
+
+AUTH_USER_MODEL = 'users.CustomUser'
 
 ROOT_URLCONF = 'eatplants.urls'
 LOGIN_URL='/login/'
