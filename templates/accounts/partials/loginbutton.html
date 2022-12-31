@@ -1,0 +1,48 @@
+{% comment %} <button id="login-button" 
+        class="bg-blue-500 hover:bg-navy-700 text-white font-bold py-2 px-4 rounded-full"  
+        type='submit'
+        hx-swap="beforeend"
+        hx-swap-oob="true">
+        Logout
+</button> {% endcomment %}
+
+{% if request.user.is_authenticated %}
+<a href="{% url "users:logout" %}" class=" py-4 px-3 text-gray-100 hover:text-gray-400"
+              id="navbar-login-button"
+              hx-post="/logout/"
+              hx-trigger="click"
+              hx-target="#navbar-login-button"
+              hx-swap="beforeend"
+              hx-swap-oob="true">
+              Logout
+</a>
+{% else %}
+<a href="{% url "users:login" %}" class=" py-4 px-3 text-gray-100 hover:text-gray-400"
+              id="navbar-login-button"
+              hx-post="/login/"
+              hx-trigger="click"
+              hx-target="#content"
+              hx-swap="innerHTML"
+              hx-swap-oob="true">
+              Login
+</a>
+{% endif %}
+
+<div id="content" hx-target="content" hx-push-url="true" hx-swap="innerHTML">
+    <h1 class="text-white font-extrabold text-2xl px-4 py-2">Login</h1>
+    <p class="text-white px-4 py-2">Please login to access your account.</p>
+        <form id="body" hx-post="/login">{% csrf_token %}
+        <div class="text-red-500 px-4">
+            {{ form.as_table }}
+        <button id="login-button" class="bg-blue-500 hover:bg-navy-700 text-white font-bold py-2 px-4 rounded-full" hx-post="/login/" hx-target="#content">Login</button>
+        </div>
+        </form>
+        <p class="text-white px-4">Need an account? Please 
+            <a class="text-red-500 underline" 
+                href="/register/"
+                hx-get="/register"
+                hx-trigger="click"
+                hx-target="#articles"
+                hx-swap="innerHTML"
+                >Register</a></p>
+</div>

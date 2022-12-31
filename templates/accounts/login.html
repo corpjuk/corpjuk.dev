@@ -3,15 +3,36 @@
 {% block content %}
 
 {% if not request.user.is_authenticated %}
-    <div style='margin-top:30px;'>
-        <form method='POST'>{% csrf_token %}
-        {{ form.as_p }}
-        <button type='submit'>Login</button>
+
+
+<div hx-target="this" hx-swap="outerHTML">
+    <h1 class="text-white font-extrabold text-2xl px-4 py-2">Login</h1>
+    <p class="text-white px-4 py-2">Please login to access your account.</p>
+        <form id="body" hx-post="/login/">{% csrf_token %}
+        <div class="text-red-500 px-4">
+            {{ form.as_table }}
+            {% comment %} <button id="login-button" 
+                class="bg-blue-500 hover:bg-navy-700 text-white font-bold py-2 px-4 rounded-full"  
+                type='submit'
+                hx-swap-oob="true">
+                Login
+            </button> {% endcomment %}
+            <button id="login-button" class="bg-blue-500 hover:bg-navy-700 text-white font-bold py-2 px-4 rounded-full" hx-post="/login/">Login</button>
+        </div>
         </form>
-        <p>Need an account? Please <a href='/register'>Register</a></p>
-    </div>
+        <p class="text-white px-4">Need an account? Please 
+            <a class="text-red-500 underline" 
+                href="/register/"
+                hx-get="/register"
+                hx-trigger="click"
+                hx-target="#articles"
+                hx-swap="innerHTML"
+                >Register</a></p>
+</div>
 {% else %}
+<div class="text-red-400 px-2 py-2">
 <p>You are already logged in. Would you like to <a href='/logout/'>logout</a>?</p>
+</div>
 {% endif %}
 
 {% endblock content %}

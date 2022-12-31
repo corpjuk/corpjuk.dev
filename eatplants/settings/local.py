@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+# import dotenv
 from os.path import abspath, basename, dirname, join, normpath
 from pathlib import Path
 
@@ -23,8 +24,15 @@ TEMPLATE_BASE = Path(__file__).resolve().parent.parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY = r'django-insecure--$(iw=q)rdu%xe4+y+xg1kh+-j18l8#(%8uosq_gz3^$r6ckl&'
-#SECRET_KEY = r'abc4'
+dotenv_file = BASE_DIR / '.env'
+# if dotenv_file.is_file():
+#     dotenv.read_dotenv(dotenv_file)
+
+# dotenv_file = os.path.join(BASE_DIR, ".env")
+# if os.path.isfile(dotenv_file):
+#     dotenv.read_dotenv(dotenv_file)
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -41,7 +49,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_htmx',
+    'crispy_forms',
     'articles',
+    'recipes',
+    'search',
+    'users'
 ]
 
 MIDDLEWARE = [
@@ -53,6 +66,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+AUTH_USER_MODEL = 'users.CustomUser'
 
 ROOT_URLCONF = 'eatplants.urls'
 LOGIN_URL='/login/'
@@ -161,3 +176,5 @@ STATIC_ROOT = TEMPLATE_BASE / 'static'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

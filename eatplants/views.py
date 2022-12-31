@@ -9,3 +9,9 @@ def home_view(request, id=None, *args, **kwargs):
     context = {'article': Article.objects.all(),}
     return render(request, 'home-view.html', context)
 
+def whyvegan_view(request, id=None, *args, **kwargs):
+    articles = Article.objects.all()
+    context = { 
+        'articles': articles
+    }
+    return render(request, 'whyvegan.html', context)

@@ -1,17 +1,28 @@
-{% extends "base.html" %}
+{% comment %} {% extends "base.html" %} {% endcomment %}
+{% comment %} {% load crispy_forms_tags %} {% endcomment %}
 
 {% block content %}
 
+<h1 class="text-white font-extrabold text-2xl px-4 py-2">Register</h1>
+<p class="text-white px-4 py-2">Please fill out the form to create an account.</p>
 {% if not request.user.is_authenticated %}
-    <div style='margin-top:30px;'>
+    <div class="px-4 py-2">
         <form method='POST'>{% csrf_token %}
-        {{ form.as_p }}
-        <button type='submit'>Register</button>
+        {% comment %} {{ form.as_p }} {% endcomment %}
+        <div class="text-red-500">
+            {{ form.as_p }}
+            {% comment %} {% crispy form %} {% endcomment %}
+        </div>
+        <div class="py-2">
+        <button type='submit' class="bg-blue-500 hover:bg-navy-700 text-white font-bold py-2 px-4 rounded-full">Register</button>
+        </div>
         </form>
-        <p>Already have an account? Please <a href='/login'>Login</a></p>
+        <p>Already have an account? Please <a href='/login' class="text-red-500 text-decoration-line: underline">Login</a></p>
     </div>
 {% else %}
-<p>You are already logged in and cannot register. Would you like to <a href='/logout/'>logout</a>?</p>
+<div class="text-gray-400 px-2 py-2">
+<p>You are already logged in and cannot register. Would you like to <a class="text-red-400 text-decoration-line: underline" href='/logout/'>logout</a>?</p>
+</div>
 {% endif %}
 
 {% endblock content %}

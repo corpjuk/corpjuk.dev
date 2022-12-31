@@ -1,0 +1,46 @@
+{% comment %}
+
+Value='{{ request.GET.q }}' saves the queryset value and keeps it in the textbox. Really simple/cool.
+
+This template does not rely on a view.
+
+
+            <option value='article'>Article</option>
+            <option value='recipe'>Recipes</option>
+
+We have hx-get and hx-trigger on the input so only the input box triggers the keys being typed
+
+hx-include is new to me, but it grabs the select id.
+
+{% endcomment %}
+<div>
+    <form action='/search/' method='GET'>
+        <select class="border-4" name='type' id='search-type'>
+                {% if request.GET.type == 'article' %}
+                    <option value='article' selected>Articles</option>
+                {% else %}
+                    <option value='article'>Articles</option>
+                {% endif %}
+
+                {% if request.GET.type == 'recipe' %}
+                    <option value='recipe' selected>Recipes</option>
+                {% else %}
+                    <option value='recipe'>Recipes</option>
+                {% endif %}
+
+        </select>
+      <input type='text' id='search-query' name='q' value='{{ request.GET.q }}' 
+            hx-get='/search/' 
+            hx-trigger='keyup changed delay:200ms' 
+            hx-include='#search-type' 
+            hx-target='#typeahead-results' 
+            hx-get='/search/'
+            />
+      
+      {% comment %} <input type='submit' /> {% endcomment %}
+      <button class="border border-slate-300 hover:border-indigo-300 text-white font-bold py-1 px-2"type='submit'>Submit</button>
+    </form>
+    <div id='typeahead-results'>
+    
+    </div>
+</div>

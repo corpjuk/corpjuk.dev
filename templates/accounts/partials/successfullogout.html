@@ -1,0 +1,26 @@
+<div id="content" hx-target="content" hx-push-url="true" hx-swap="innerHTML">
+    <p>You have successfully logged out.</p>
+</div>
+
+{% if request.user.is_authenticated %}
+<a href="{% url "users:logout" %}" class=" py-4 px-3 text-gray-100 hover:text-gray-400" 
+    id="navbar-login-button"
+    hx-post="/logout/"
+    hx-trigger="click"
+    hx-target="#content"
+    hx-swap="innerHTML"
+    hx-swap-oob="true"
+>
+    Logout
+</a>
+{% else %}
+<a href="{% url "users:login" %}" class=" py-4 px-3 text-gray-100 hover:text-gray-400"
+    id="navbar-login-button"
+    hx-post="/login/"
+    hx-trigger="click"
+    hx-target="#content"
+    hx-swap="innerHTML"
+    hx-swap-oob="true">
+    Login
+</a>
+{% endif %}

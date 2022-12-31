@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h1>{{ request.user.username }}</h1>
+
+<br>
+
+{% comment %} {% crispy form %} {% endcomment %}
+
+{% endblock content %}

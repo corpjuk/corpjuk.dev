@@ -1,0 +1,28 @@
+{% comment %} {% extends "base.html" %} {% endcomment %}
+
+{% block content %}
+
+<h1 class="font-extrabold text-2xl py-2 px-4">Articles Page.</h1>
+<p class="py-2 px-4">Welcome to 100% Vegan. Here is a collection of aritlces that can be writen by registered users.</p>
+
+  <p class="py-2 px-4">Feel free to leave a post and give your thoughts about veganism.</p>
+
+  <p class="py-2 px-4">If you have any questions or comments, please feel free to contact me.</p>
+
+
+  <p class="py-2 px-4">Thank you for visiting.</p>
+<div class="text-blue-500 px-8">
+{% for x in article %}
+{% if x.title %}
+<a href='{{ x.get_absolute_url }}'
+  hx-get="{{ x.get_absolute_url }}"
+  hx-trigger="click"
+  hx-target="#articles"
+  hx-swap="innerHTML"
+>
+<div class="px-2 py-1 underline text-blue-400 decoration-sky-600 hover:decoration-blue-400">{{x.title }} - {{ x.content }}</div>
+</a>
+{% endif %} 
+{% endfor %} 
+</div>
+{% endblock content %}
