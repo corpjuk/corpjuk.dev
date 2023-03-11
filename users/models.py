@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 
+
 class CustomUserManager(BaseUserManager):
 
     # def get_by_natural_key(self, username):
@@ -30,15 +31,12 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault("is_superuser", True)
 
         if extra_fields.get("is_staff") is not True:
-            raise ValueError(
-                "Superuser must have is_staff=True."
-            )
+            raise ValueError("Superuser must have is_staff=True.")
         if extra_fields.get("is_superuser") is not True:
-            raise ValueError(
-                "Superuser must have is_superuser=True."
-            )
+            raise ValueError("Superuser must have is_superuser=True.")
 
         return self._create_user(email, password, **extra_fields)
+
 
 class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)

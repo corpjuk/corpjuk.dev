@@ -15,35 +15,43 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import include
+from django.conf.urls.static import static
+from django.conf import settings
 
-from accounts.views import (
+from users.views import (
     login_view,
     logout_view,
     register_view,
     profile_view,
 )
 
+from articles.views import (
+    article_search_view,
+    article_create_view,
+    article_detail_view,
+)
+
 from search.views import search_view
 from .views import home_view, whyvegan_view
 
-#the order matters for URLS
+# the order matters for URLS
 urlpatterns = [
-    path('', home_view), # index / home / root
-    path('articles/', article_search_view),
-    path('articles/create/', article_create_view, name='article-create'),
-    path('articles/<slug:slug>/', article_detail_view, name='article-detail'),
-    path('admin/', admin.site.urls),
-    path('login/', login_view, name='login'),
-    path('logout/', logout_view, name='logout'),
-    path('pantry/recipes/', include('recipes.urls')),
+    path("", home_view),  # index / home / root
+    path("articles/", article_search_view, name="articles"),
+    path("articles/create/", article_create_view, name="article-create"),
+    path("articles/<slug:slug>/", article_detail_view, name="article-detail"),
+    path("admin/", admin.site.urls),
+    path("login/", login_view, name="login"),
+    path("logout/", logout_view, name="logout"),
+    path("pantry/recipes/", include("recipes.urls")),
     # path('profile/', profile_view, name='profile'),
-    path('register/', register_view, name='register'),
-    path('search/', search_view, name='search'),
-    path('profile/', include('users.urls')),
-    path('whyvegan/', whyvegan_view, name='whyvegan')
-    
+    path("register/", register_view, name="register"),
+    path("search/", search_view, name="search"),
+    path("profile/", include("users.urls")),
+    path("whyvegan/", whyvegan_view, name="whyvegan"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-    # path('articles/', article_search_view, name='articles'),
-    # path('articles/create/', article_create_view, name='article-create'),
-    # path('articles/<slug:slug>/', article_detail_view, name='article-detail'),
+# path('articles/', article_search_view, name='articles'),
+# path('articles/create/', article_create_view, name='article-create'),
+# path('articles/<slug:slug>/', article_detail_view, name='article-detail'),

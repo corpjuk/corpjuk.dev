@@ -14,8 +14,10 @@ RUN pip install -r $requirements
 COPY logs logs
 COPY config config
 COPY eatplants eatplants
-COPY accounts accounts
+COPY users users
 COPY articles articles
+COPY recipes recipes
+COPY search search
 COPY templates templates
 
 RUN sh -c 'touch logs/corpjuksite.log'
