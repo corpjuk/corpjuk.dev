@@ -11,13 +11,14 @@
   <p class="py-2 px-1">If you have any recipes that you would like to share, please feel free to add them to the site.</p>
 
   <p class="py-2 px-1">Thank you for visiting.</p>
-<a href='{% url "recipes:create" %}'
-    hx-get="{{ x.get_absolute_url }}"
+<div hx-boost="true">
+<a href="{% url "recipes:create" %}"
     hx-trigger="click"
     hx-target="#articles"
     hx-swap="innerHTML"
     class="px-5 py-2 underline text-blue-400 decoration-sky-600 hover:decoration-blue-400"
 >Add Recipe</a>
+</div>
 
 
   {% comment %}
@@ -26,6 +27,7 @@
   This is an important variable to match when displaying the object and data.
 
   {% endcomment %}
+  
   <div class="px-5 py-2 underline text-blue-400 decoration-sky-600 hover:decoration-blue-400">
   {% for x in object_list %}
     <div><a href=""
@@ -36,7 +38,7 @@
       >{{x.name}}</a></div>
   {% endfor %} 
   </div>
-
-  {% comment %} Div to display Recipe Details {% endcomment %}
+  
+  
 
 {% endblock content %}

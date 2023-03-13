@@ -85,7 +85,7 @@ def recipe_detail_hx_view(request, id=None):
     return render(request, "recipes/partials/detail.html", context)
 
 
-@login_required
+# @login_required
 def recipe_create_view(request):
     form = RecipeForm(request.POST or None)
     context = {"form": form}
