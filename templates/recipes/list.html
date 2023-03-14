@@ -1,7 +1,7 @@
 {% comment %} {% extends "base.html" %} {% endcomment %}
 
 {% block content %}
-
+<div hx-boost="true">
 <h1 class="font-extrabold text-2xl py-2 px-1">Vegan Recipes.</h1>
 
   <p class="py-2 px-1">This is a collection of vegan recipes that I have tried and tested. I hope you enjoy them as much as I do.</p>
@@ -11,14 +11,14 @@
   <p class="py-2 px-1">If you have any recipes that you would like to share, please feel free to add them to the site.</p>
 
   <p class="py-2 px-1">Thank you for visiting.</p>
-<div hx-boost="true">
+
 <a href="{% url "recipes:create" %}"
     hx-trigger="click"
     hx-target="#articles"
     hx-swap="innerHTML"
     class="px-5 py-2 underline text-blue-400 decoration-sky-600 hover:decoration-blue-400"
 >Add Recipe</a>
-</div>
+
 
 
   {% comment %}
@@ -30,15 +30,14 @@
   
   <div class="px-5 py-2 underline text-blue-400 decoration-sky-600 hover:decoration-blue-400">
   {% for x in object_list %}
-    <div><a href=""
-    hx-get="{{ x.get_absolute_url }}"
+    <div><a href="{% url "recipes:hx-detail" x.id %}"
     hx-trigger="click"
-    hx-target="#articles"
+    hx-target="#recipes"
     hx-swap="innerHTML"
       >{{x.name}}</a></div>
   {% endfor %} 
   </div>
-  
+  </div>
   
 
 {% endblock content %}

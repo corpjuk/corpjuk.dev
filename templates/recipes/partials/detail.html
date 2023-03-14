@@ -1,4 +1,4 @@
-<h1>{{ object.name }} {% if object.get_edit_url %}</h1>
+<h1 class="font-extrabold text-2xl py-2 px-1" >{{ object.name }} {% if object.get_edit_url %}</h1>
     <small>
         <a href='{{ object.get_edit_url }}'>Edit</a>
         <a href='{{ object.get_delete_url }}' 
@@ -11,6 +11,7 @@
     {% endif %}
 <p>{{ object.description }}</p>
 <p>{{ object.directions }}</p>
+
 
 {% for ingredient in object.get_ingredients_children %}
 <h1>{{ ingredient.name }}</h1>
