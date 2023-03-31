@@ -1,20 +1,77 @@
-<h1 class="font-extrabold text-2xl py-2 px-1" >{{ object.name }} {% if object.get_edit_url %}</h1>
-    <small>
-        <a href='{{ object.get_edit_url }}'>Edit</a>
-        <a href='{{ object.get_delete_url }}' 
-            hx-post='{{ object.get_delete_url }}' 
-            hx-confirm='Are you sure you want to delete {{ object.name }}?'
-            hx-trigger='click'
-            {% comment %} hx-headers='{"X-CSRFToken": "{{ csrf_token }}"' {% endcomment %}
-            >Delete</a>
-    </small>
+<div class="recipe">
+  <h2>{{ recipe.title }}</h2>
+  <img src="{{ recipe.image_url }}" alt="{{ recipe.title }}">
+  <p>{{ recipe.description }}</p>
+  <h3>Ingredients</h3>
+  <ul>
+    {% for ingredient in recipe.ingredients %}
+      <li>{{ ingredient }}</li>
+    {% endfor %}
+  </ul>
+  <h3>Instructions</h3>
+  <ol>
+    {% for instruction in recipe.instructions %}
+      <li>{{ instruction }}</li>
+    {% endfor %}
+  </ol>
+</div>
+
+
+{% comment %} {% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-28hTzTj+YrFTcPPio7h3q3jzVwALsQsB+kDXtAUjQOfrhV7YFCqb20ZeuV7/dHjJR0aHRwzCxlF/bfV7ahDkHw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<div hx-boost="true">
+<a href="{{ previous.get_hx_url }}" hx-get="{{ previous.get_hx_url }}" hx-target="#content-container-2" hx-swap="innerHTML" id="prev-button" class="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+  <i class="fas fa-chevron-left mr-2"></i>
+  Previous
+</a>
+
+<a href="{{ next.get_hx_url }}" hx-get="{{ next.get_hx_url }}" hx-target="#content-container-2" hx-swap="innerHTML" id="next-button" class="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+  Next
+  <i class="fas fa-chevron-right ml-2"></i>
+</a>
+
+
+<div class="container mx-auto px-4 py-8">
+  <div class="mb-8">
+    <h1 class="font-extrabold text-gray-300 text-2xl">{{ object.name }}</h1>
+    {% if object.get_edit_url %}
+    <div class="text-sm mt-1">
+      <a href='{{ object.get_edit_url }}' class="text-blue-500 mr-4 hover:underline">Edit</a>
+      <a href='{{ object.get_delete_url }}' 
+        hx-post='{{ object.get_delete_url }}' 
+        hx-confirm='Are you sure you want to delete {{ object.name }}?'
+        hx-trigger='click'
+        class="text-red-500 hover:underline"
+      >Delete</a>
+    </div>
     {% endif %}
-<p>{{ object.description }}</p>
-<p>{{ object.directions }}</p>
-
-
-{% for ingredient in object.get_ingredients_children %}
-<h1>{{ ingredient.name }}</h1>
-<p>{{ ingredient.as_imperial }}</p>
-<p>{{ ingredient.as_mks }}</p>
-{% endfor %}
+  </div>
+  
+  <div class="flex text-white flex-wrap -mx-4 mb-8">
+    <div class="w-full md:w-1/2 px-4">
+      <img src="{{ object.image.url }}" alt="{{ object.name }}" class="mb-4">
+      <div class="mb-4">
+        <h2 class="font-bold text-lg mb-2">Description</h2>
+        <p>{{ object.description }}</p>
+      </div>
+    </div>
+    <div class="w-full md:w-1/2 px-4">
+      <div class="mb-4">
+        <h2 class="font-bold text-lg mb-2">Ingredients</h2>
+        {% for ingredient in object.get_ingredients_children %}
+        <div class="mb-2">
+          <h3 class="font-semibold text-base">{{ ingredient.name }}</h3>
+          <p class="text-sm">{{ ingredient.as_imperial }} ({{ ingredient.as_mks }})</p>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="mb-4">
+        <h2 class="font-bold text-lg mb-2">Directions</h2>
+        <p>{{ object.directions }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock content %} {% endcomment %}

@@ -1,43 +1,41 @@
-{% comment %} {% extends "base.html" %} {% endcomment %}
-
 {% block content %}
-<div hx-boost="true">
-<h1 class="font-extrabold text-2xl py-2 px-1">Vegan Recipes.</h1>
+<div class="px-4 py-8">
+  <h1 class="font-bold text-3xl mb-4">Vegan Recipes</h1>
 
-  <p class="py-2 px-1">This is a collection of vegan recipes that I have tried and tested. I hope you enjoy them as much as I do.</p>
+  <p class="mb-4">
+    This is a collection of vegan recipes that I have tried and tested. I hope you enjoy them as much as I do.
+  </p>
 
-  <p class="py-2 px-1">If you have any questions or comments, please feel free to contact me.</p>
+  <p class="mb-4">
+    If you have any questions or comments, please feel free to contact me.
+  </p>
 
-  <p class="py-2 px-1">If you have any recipes that you would like to share, please feel free to add them to the site.</p>
+  <p class="mb-4">
+    If you have any recipes that you would like to share, please feel free to add them to the site.
+  </p>
 
-  <p class="py-2 px-1">Thank you for visiting.</p>
+  <p class="mb-4">
+    Thank you for visiting.
+  </p>
 
-<a href="{% url "recipes:create" %}"
+  <a href="{% url "recipes:create" %}"
     hx-trigger="click"
-    hx-target="#articles"
+    hx-target="#content-container-2"
     hx-swap="innerHTML"
-    class="px-5 py-2 underline text-blue-400 decoration-sky-600 hover:decoration-blue-400"
->Add Recipe</a>
+    class="px-5 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+  >Add Recipe</a>
 
-
-
-  {% comment %}
-
-  object_list is the context in the recipes/views.py
-  This is an important variable to match when displaying the object and data.
-
-  {% endcomment %}
-  
-  <div class="px-5 py-2 underline text-blue-400 decoration-sky-600 hover:decoration-blue-400">
-  {% for x in object_list %}
-    <div><a href="{% url "recipes:hx-detail" x.id %}"
-    hx-trigger="click"
-    hx-target="#recipes"
-    hx-swap="innerHTML"
-      >{{x.name}}</a></div>
-  {% endfor %} 
+  <div hx-boost="true" class="mt-4">
+    {% for x in object_list %}
+      <div class="mb-2">
+        <a href="{% url "recipes:hx-detail" x.id %}"
+          hx-trigger="click"
+          hx-target="#content-container-2"
+          hx-swap="innerHTML"
+          class="text-blue-500 hover:text-blue-600"
+        >{{ x.name }}</a>
+      </div>
+    {% endfor %} 
   </div>
-  </div>
-  
-
-{% endblock content %}
+</div>
+{% endblock %}
