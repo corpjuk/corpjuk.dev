@@ -33,7 +33,7 @@ from articles.views import (
 )
 
 from search.views import search_view
-from .views import home_view, whyvegan_view
+from .views import home_view, whyvegan_view, about_view
 
 # the order matters for URLS
 urlpatterns = [
@@ -50,6 +50,7 @@ urlpatterns = [
     path("search/", search_view, name="search"),
     path("profile/", include("users.urls")),
     path("whyvegan/", whyvegan_view, name="whyvegan"),
+    path("about/", about_view, name="about"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # path('articles/', article_search_view, name='articles'),
