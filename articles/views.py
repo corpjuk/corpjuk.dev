@@ -11,10 +11,14 @@ from .forms import ArticleForm
 
 
 def article_list_view(request):
-    # qs = Article.objects.filter(user=request.user)
     qs = Article.objects.all()
-    context = {"object_list": qs}
-    return (render, "articles/articles.html", context)
+    context = {"articles": qs}
+    if request.htmx:
+        print("htmx request from article_list_view" + str(context))
+        return render(request, "articles/partials/detail.html", context)
+    else:
+        print("normal request from article_list_view" + str(context))
+        return render(request, "articles/articles.html", context)
 
 
 def article_detail_view(request, slug=None, *args, **kwargs):
@@ -26,13 +30,17 @@ def article_detail_view(request, slug=None, *args, **kwargs):
             raise Http404
         except Article.MultipleObjectsReturned:
             article_obj = Article.objects.filter(slug=slug).first()
-            # a little confused why it gets set to first
-        except:
-            raise Http404
     context = {
         "object": article_obj,
     }
-    return render(request, "articles/detail.html", context=context)
+    if request.htmx:
+        print("htmx request from article_detail_view" + str(context))
+        return render(
+            request, "articles/partials/detail.html", context=context
+        )
+    else:
+        print("normal request from article_detail_view" + str(context))
+        return render(request, "articles/articles.html", context=context)
 
 
 # clean version #things to learn print(dir(request)), print(request.GET), qs = Article.objects.search(query), query = request.GET.get('q')
@@ -49,20 +57,6 @@ def article_search_view(request):
         return render(request, "articles/search.html", context=context)
 
 
-# Notes version down below
-# def article_search_view(request):
-#     #print(dir(request))
-#     #print(request.GET)
-#     query = request.GET.get('q') # this is a dictionary
-#     qs = Article.objects.search(query=query)
-#     #if query is not None:
-#     #qs = Article.objects.search(query)
-#     context = {
-#         # "object": article_obj,
-#         "object_list": qs
-#     }
-#     return render(request, "articles/search.html", context=context)
-
 # @csrf_exempt Security Risk. We can use this decorator to circumvent the csrf token requirment. Useful for building REST API.
 
 
@@ -77,28 +71,4 @@ def article_create_view(request):
         article_object = form.save()
         context["form"] = ArticleForm()
         return redirect(article_object.get_absolute_url())
-        # A different way to do the return redirect
-        # return redirect("article-detail", slug=article_object.slug)
-        # context['object'] = article_object
-        # context['created'] = True
     return render(request, "articles/create.html", context=context)
-
-
-# def article_create_view(request):
-#     #print(request.POST)
-#     form = ArticleForm()
-#     context = {
-#         "form": form,
-#     }
-#     if request.method == "POST":
-#         form = ArticleForm(request.POST)
-#         if form.is_valid():
-#             title = form.cleaned_data.get("title")
-#             content = form.cleaned_data.get("content")
-#             # title = request.POST.get("title")
-#             # content = request.POST.get("content")
-#             article_object = Article.objects.create(title=title, content=content)
-#             context['object'] = article_object
-#             context['created'] = True
-
-#     return render(request, "articles/create.html", context=context)

@@ -1,29 +1,48 @@
-{% comment %} {% extends "base.html" %} {% endcomment %}
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Articles{% endblock title %}
 
 {% block content %}
+<div>
+  <h1>Articles</h1>
 
-<h1 class="font-extrabold text-2xl py-2 px-4">Articles Page</h1>
-<p class="py-2 px-4">Welcome to 100% Vegan. Here is a collection of articles that can be written by registered users.</p>
+  <p class="mb-4">
+    This is a collection of articles that can be written by registered users. Feel free to leave a post and give your thoughts about veganism.
+  </p>
 
-<p class="py-2 px-4">Feel free to leave a post and give your thoughts about veganism.</p>
+  <p class="mb-4">
+    If you have any questions or comments, please feel free to contact us.
+  </p>
 
-<p class="py-2 px-4">If you have any questions or comments, please feel free to contact us.</p>
+  <p class="mb-4">
+    Thank you for visiting.
+  </p>
 
-<p class="py-2 px-4">Thank you for visiting.</p>
+  <a href="{% url "articles:create" %}"
+    hx-trigger="click"
+    hx-target="#content-container-2"
+    hx-swap="innerHTML"
+    class="px-5 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+  >Add Article</a>
 
-<div class="text-blue-500 px-8">
-  {% for article in articles %}
-    {% if article.title %}
-      <a href='{{ article.get_absolute_url }}'
-        hx-get="{{ article.get_absolute_url }}"
-        hx-trigger="click"
-        hx-target="#content-container-1"
-        hx-swap="innerHTML"
-      >
-        <div class="px-2 py-1 underline text-blue-400 decoration-sky-600 hover:decoration-blue-400">{{ article.title }}</div>
-      </a>
-    {% endif %} 
-  {% endfor %} 
+  <div hx-boost="true" class="mt-4">
+    {% for article in articles %}
+      {% if article.title %}
+        <div class="mb-2">
+          <a href='{{ article.get_absolute_url }}'
+            hx-get='{{ article.get_absolute_url }}'
+            hx-trigger="click"
+            hx-target="#content-container-1"
+            hx-swap="innerHTML"
+            class="text-blue-500 hover:text-blue-600"
+          >{{ article.title }}</a>
+        </div>
+      {% endif %}
+    {% endfor %} 
+  </div>
 </div>
+
 
 {% endblock content %}

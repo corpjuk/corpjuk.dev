@@ -1,16 +1,30 @@
 {% load static %}
 <!DOCTYPE html>
+<script>
+    if (typeof window.htmx !== "undefined") {
+        htmx.on("htmx:afterSettle", function(detail) {
+            if (
+                typeof window.djdt !== "undefined"
+                && detail.target instanceof HTMLBodyElement
+            ) {
+                djdt.show_toolbar();
+            }
+        });
+    }
+</script>
+
 <html hx-debug>
 <head hx-boost>
-    <style>
-        body {
-          padding-right: 16px;
-          overflow-y: auto;
-        }
-    </style>
         <title>100% Vegan</title>
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.1.2/tailwind.min.css">
-          
+<style>
+    #container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        background-color: red;
+    }
+</style>
 </head>
 
 <!-- Scripts -->
@@ -27,7 +41,7 @@
                   </div>
                   <div class="hidden md:block">
                       <div class="ml-10 flex items-center space-x-4 h-full">
-                          <a href="{% url "articles" %}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                          <a href="{% url "articles:list" %}" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                               hx-trigger="click"
                               hx-target="#content-container-1"
                               hx-swap="innerHTML"
@@ -50,16 +64,18 @@
       </nav>
 
     <!-- Body -->
-    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 flex-grow">
-        <div id="content-container-1" class="container mx-auto bg-[#04151F] rounded-3xl text-gray-200 px-4" hx-target="#content-container-1" hx-swap="outerHTML" hx-indicator="#loading-indicator">
-            {% if content1 %}
-                {{ content1 }}
-            {% endif %}
-        </div>
-        <div id="content-container-2" class="px-4 py-6 sm:px-0" hx-target="#content-container-2" hx-swap="outerHTML" hx-indicator="#loading-indicator">
-            {% if content2 %}
-                {{ content2 }}
-            {% endif %}
+    <div id="container" class="page-content block">
+        <div class="flex justify-center" hx-boost="true">
+            <div id="content-container-1" class="container mx-auto bg-[#04151F] rounded-3xl text-gray-200 px-4" hx-target="#content-container-1" hx-swap="outerHTML" hx-indicator="#loading-indicator">
+                {% if content1 %}
+                    {{ content1 }}
+                {% endif %}
+            </div>
+            <div id="content-container-2" class="container mx-auto bg-[#04151F] rounded-3xl text-gray-200 px-4" hx-target="#content-container-2" hx-swap="outerHTML" hx-indicator="#loading-indicator">
+                {% if content2 %}
+                    {{ content2 }}
+                {% endif %}
+            </div>
         </div>
     </div>
 
@@ -72,6 +88,5 @@
             </div>
         </div>
     </footer>
-
 </body>
 </html>

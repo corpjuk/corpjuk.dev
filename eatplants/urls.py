@@ -26,21 +26,16 @@ from users.views import (
     profile_view,
 )
 
-from articles.views import (
-    article_search_view,
-    article_create_view,
-    article_detail_view,
-)
-
+from articles import urls as articles_urls
 from search.views import search_view
 from .views import home_view, whyvegan_view, about_view
+
 
 # the order matters for URLS
 urlpatterns = [
     path("", home_view, name="home"),  # index / home / root
-    path("articles/", article_search_view, name="articles"),
-    path("articles/create/", article_create_view, name="article-create"),
-    path("articles/<slug:slug>/", article_detail_view, name="article-detail"),
+    # include articles.urls
+    path("articles/", include(articles_urls)),
     path("admin/", admin.site.urls),
     path("login/", login_view, name="login"),
     path("logout/", logout_view, name="logout"),
@@ -51,6 +46,7 @@ urlpatterns = [
     path("profile/", include("users.urls")),
     path("whyvegan/", whyvegan_view, name="whyvegan"),
     path("about/", about_view, name="about"),
+    path("__debug__/", include("debug_toolbar.urls")),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # path('articles/', article_search_view, name='articles'),

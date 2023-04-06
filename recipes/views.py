@@ -7,22 +7,52 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import redirect, render, get_object_or_404
 
 from .forms import RecipeForm, RecipeIngredientForm, RecipeIngredientImageForm
-from .models import Recipe, RecipeIngredient
+from .models import Recipe, RecipeIngredient, RecipeManager
 
 # CRUD -> Create Retrieve Update & Delete
 
 # @login_required
+# def recipe_list_view(request):
+#     # qs = Recipe.objects.filter(user=request.user)
+#     qs = Recipe.objects.all()
+#     context = {"object_list": qs}
+#     return render(request, "recipes/list.html", context)
+
+# chatGPT new recipe list view
 def recipe_list_view(request):
-    # qs = Recipe.objects.filter(user=request.user)
     qs = Recipe.objects.all()
+    qs = RecipeManager().all(qs).filter(active=True)
     context = {"object_list": qs}
     return render(request, "recipes/list.html", context)
 
 
 # @login_required
+# def recipe_detail_view(request, id=None):
+#     hx_url = reverse("recipes:hx-detail", kwargs={"id": id})
+#     context = {"hx_url": hx_url}
+#     return render(request, "recipes/detail.html", context)
+
+# chatGPT new recipe detail view
 def recipe_detail_view(request, id=None):
+    recipe = get_object_or_404(Recipe, id=id)
     hx_url = reverse("recipes:hx-detail", kwargs={"id": id})
-    context = {"hx_url": hx_url}
+
+    # Get the previous and next recipes
+    try:
+        previous_recipe = recipe.get_previous_by_created()
+    except Recipe.DoesNotExist:
+        previous_recipe = None
+    try:
+        next_recipe = recipe.get_next_by_created()
+    except Recipe.DoesNotExist:
+        next_recipe = None
+
+    context = {
+        "recipe": recipe,
+        "previous": previous_recipe,
+        "next": next_recipe,
+        "hx_url": hx_url,
+    }
     return render(request, "recipes/detail.html", context)
 
 
@@ -71,18 +101,56 @@ def recipe_ingredient_delete_view(request, parent_id=None, id=None):
 
 
 # @login_required
+# def recipe_detail_hx_view(request, id=None):
+#     if not request.htmx:
+#         raise Http404
+#     try:
+#         # obj = Recipe.objects.get(id=id, user=request.user)
+#         obj = Recipe.objects.get(id=id)
+#     except:
+#         obj = None
+#     if obj is None:
+#         return HttpResponse("Not found.")
+#     context = {"object": obj}
+#     return render(request, "recipes/partials/detail.html", context)
+
+# chatgpt new recipe detail hx view
 def recipe_detail_hx_view(request, id=None):
-    if not request.htmx:
-        raise Http404
-    try:
-        # obj = Recipe.objects.get(id=id, user=request.user)
-        obj = Recipe.objects.get(id=id)
-    except:
-        obj = None
-    if obj is None:
-        return HttpResponse("Not found.")
-    context = {"object": obj}
-    return render(request, "recipes/partials/detail.html", context)
+    if request.htmx:
+        try:
+            recipe = Recipe.objects.get(id=id)
+        except Recipe.DoesNotExist:
+            return HttpResponse("Not found.")
+
+        hx_url = reverse("recipes:hx-detail", kwargs={"id": id})
+
+        try:
+            previous_recipe = recipe.get_previous_hx_url()
+        except Recipe.DoesNotExist:
+            previous_recipe = None
+
+        try:
+            next_recipe = recipe.get_next_hx_url()
+        except Recipe.DoesNotExist:
+            next_recipe = None
+
+        context = {
+            "recipe": recipe,
+            "previous": previous_recipe,
+            "next": next_recipe,
+            "hx_url": hx_url,
+        }
+
+        return render(request, "recipes/partials/detail.html", context)
+    else:
+        try:
+            recipe = Recipe.objects.get(id=id)
+        except Recipe.DoesNotExist:
+            return HttpResponse("Not found.")
+
+        context = {"recipe": recipe}
+
+        return render(request, "recipes/detail.html", context)
 
 
 # @login_required
